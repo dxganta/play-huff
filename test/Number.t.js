@@ -1,10 +1,9 @@
 const { expect } = require("chai");
-const { assert } = require("console");
 const { ethers } = require("hardhat");
 
 let number;
 
-describe("Greeter", function () {
+describe("Number", function () {
   beforeEach(async function () {
     const Number = await ethers.getContractFactory("Number");
     number = await Number.deploy();
