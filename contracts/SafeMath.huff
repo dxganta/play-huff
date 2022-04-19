@@ -1,7 +1,8 @@
 /* Interface */
 #define function safeAdd(uint256,uint256) view returns (uint256)
 #define function safeMinus(uint256,uint256) view returns (uint256)
-
+#define function safeMul(uint256,uint256) view returns (uint256)
+#define function safeDiv(uint256,uint256) view returns (uint256)
 
 /* Methods */
 #define macro SAFE_ADD() = takes (0) returns (0) {
@@ -20,7 +21,7 @@
     0x20 0x00 return
 
     error:
-        0x00 0x00 revert
+    0x00 0x00 revert
 }
 
 #define macro SAFE_MINUS() = takes (0) returns (0) {
@@ -29,7 +30,7 @@
     dup2                    // [b, a,b]
     dup2                    // [a,b,a,b]
     lt                      // [a<b,a,b]
-    error jumpi             // revert if a<b
+    error jumpi             // revert if a<b 
     sub                     // [a-b]
 
     // store the value in memory
@@ -42,13 +43,56 @@
         0x00 0x00 revert
 }
 
+#define macro SAFE_MUL() = takes (0) returns (0) {
+    0x04 calldataload       // [a]
+    0x24 calldataload       // [b,a]
+    dup2                    // [a,b,a]
+    dup2                    // [b,a,b,a]
+    mul                     // [ba,b,a]
+    swap2                   // [a,b,ba]
+    dup3                    // [ba,a,b,ba]
+    div                     // [ba/a,b,ba]
+    eq                      // [ba/a==b,ba]
+    iszero
+    error jumpi
+
+    0x00 mstore
+
+    0x20 0x00 return
+
+    error:
+        0x00 0x00 revert
+}
+
+#define macro SAFE_DIV() = takes (0) returns (0) {
+    0x24 calldataload       // [b]
+    dup1                    // [b,b]
+    iszero                  // [b==0,b]
+    error jumpi             // [b] revert if b==0
+
+    0x04 calldataload       // [a,b]
+    div                     // [a/b]
+
+    0x00 mstore
+    0x20 0x00 return
+
+    error:
+        0x00 0x00 revert
+}
+
 #define macro MAIN() = takes (0) returns (0) {
     0x00 calldataload 0xE0 shr
     dup1 0xe6cb9013 eq addition jumpi
     dup1 0x7dfcb59e eq minus jumpi
+    dup1 0xd05c78da eq multiply jumpi
+    dup1 0xb5931f7c eq division jumpi
 
     addition:
         SAFE_ADD()
     minus:
         SAFE_MINUS()
+    multiply:
+        SAFE_MUL()
+    division:
+        SAFE_DIV()
 }
