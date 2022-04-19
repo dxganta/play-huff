@@ -25,4 +25,7 @@ module.exports = {
   huff: {
     version: "0.0.17",
   },
+  gasReporter: {
+    enabled: true,
+  },
 };

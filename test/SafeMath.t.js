@@ -23,6 +23,10 @@ describe("SafeMath", function () {
 
     // must revert if overflow
     await expect(sm.safeAdd(uintMax, 1)).to.be.reverted;
+
+    // check gas
+    const gas = await sm.estimateGas.safeAdd(100, 69);
+    console.log("SafeAdd Gas", gas.toNumber());
   });
 
   it("SafeMinus Test", async function () {
@@ -31,6 +35,10 @@ describe("SafeMath", function () {
 
     // must revert if underflow
     await expect(sm.safeMinus(20, 100)).to.be.reverted;
+
+    // check gas
+    const gas = await sm.estimateGas.safeMinus(100, 69);
+    console.log("SafeMinus Gas", gas.toNumber());
   });
 
   it("SafeMultipy Test", async function () {
@@ -39,6 +47,10 @@ describe("SafeMath", function () {
 
     // must revert if overflow
     await expect(sm.safeMul(uintMax, 2)).to.be.reverted;
+
+    // check gas
+    const gas = await sm.estimateGas.safeMul(100, 69);
+    console.log("SafeMul Gas", gas.toNumber());
   });
 
   it("SafeDiv Test", async function () {
@@ -47,5 +59,9 @@ describe("SafeMath", function () {
 
     // must revert if division by zero
     await expect(sm.safeDiv(100, 0)).to.be.reverted;
+
+    // check gas
+    const gas = await sm.estimateGas.safeDiv(100, 69);
+    console.log("SafeDiv Gas", gas.toNumber());
   });
 });
