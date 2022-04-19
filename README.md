@@ -1,12 +1,13 @@
-# <h1 align="center"> Hardhat Huff Template </h1>
+# <h1 align="center"> Playing with [Huff](https://github.com/JetJadeja/huffc) (Low Level Language for developing Smart Contracts) </h1>
 
-** Template for getting started with Huff **
+## Contracts
+
+1. [SafeMath.huff](https://github.com/realdiganta/play-huff/blob/main/contracts/SafeMath.huff)
+   SafeMath Library in Huff
 
 ## Setup
 
 ```sh
-git clone https://github.com/JetJadeja/huff-project-template.git
-cd huff-project-template
 npm i
 ```
 
@@ -23,5 +24,3 @@ To test your contracts, write:
 ```sh
 npx hardhat test
 ```
-
-For more advanced Hardhat usage, please check the [Hardhat documentation](https://hardhat.org/getting-started/).
